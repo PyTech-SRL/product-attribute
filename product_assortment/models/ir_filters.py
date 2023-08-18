@@ -123,3 +123,14 @@ class IrFilters(models.Model):
             }
         )
         return action
+
+    # Make sure that every duplicated object has a different name
+    def copy_data(self, default=None):
+        new = super().copy_data(default)
+        while True:
+            duplicate = self.search([("name", "ilike", new[0].get("name", ""))])
+            if not duplicate:
+                break
+            new[0]["name"] = _("%s (copy)", new[0]["name"])
+
+        return new

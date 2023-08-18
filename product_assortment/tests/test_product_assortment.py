@@ -116,3 +116,9 @@ class TestProductAssortment(TransactionCase):
             }
         )
         self.assertEqual(assortment.all_partner_ids, self.partner + self.partner2)
+
+    def test_duplicate(self):
+        # Copying the same filter over and over again should not raise any exceptions
+        for _ in range(10):
+            new_assortment = self.assortment.copy()
+            self.assertTrue(new_assortment)
